@@ -1,0 +1,27 @@
+{
+  "name": "chatgpt-account-vault-backend",
+  "version": "1.1.0",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "key": "node scripts/generate-key.js",
+    "key:write": "node scripts/generate-key.js --write",
+    "hash:admin": "node scripts/hash-admin-password.js",
+    "check:admin": "node scripts/check-admin-password.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.8.3",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

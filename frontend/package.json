@@ -1,0 +1,26 @@
+{
+  "name": "chatgpt-account-vault-frontend",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "homepage": "https://www.gpt-account.minhptit.id.vn/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist --cname www.gpt-account.minhptit.id.vn"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.3",
+    "gh-pages": "^6.3.0"
+  }
+}
