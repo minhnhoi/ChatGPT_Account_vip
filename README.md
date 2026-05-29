@@ -302,19 +302,7 @@ Bản này vẫn giữ nguyên logic chính của AccountHub, nhưng bổ sung t
 
 Khi deploy HTTPS thật, sửa trong `backend/.env`:
 
-```env
-NODE_ENV=production
-CLIENT_URL=https://domain-frontend-cua-ban.com
-ADMIN_COOKIE_SECURE=true
-ADMIN_COOKIE_SAMESITE=Strict
-```
-
 Nếu frontend và backend khác subdomain/cross-site, có thể phải dùng:
-
-```env
-ADMIN_COOKIE_SAMESITE=None
-ADMIN_COOKIE_SECURE=true
-```
 
 Không commit `.env`, không public `ENCRYPTION_KEY`, `ADMIN_PASSWORD`, Gmail App Password hoặc file backup.
 
@@ -350,41 +338,7 @@ Nếu frontend và backend cùng site/subdomain, ví dụ:
 - `https://app.example.com`
 - `https://api.example.com`
 
-có thể dùng:
-
-```env
-NODE_ENV=production
-PORT=5000
-CLIENT_URL=https://app.example.com
-MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/account-hub
-ENCRYPTION_KEY=hex_64_ky_tu_tao_bang_npm_run_key
-ADMIN_PASSWORD_HASH=$2b$12$hash_tao_bang_npm_run_hash_admin
-
-# Giữ đăng nhập admin sau khi reload/reset nếu chưa bấm Đăng xuất
-ADMIN_SESSION_DAYS=7
-
-ADMIN_COOKIE_NAME=__Host-account_hub_admin
-ADMIN_COOKIE_SECURE=true
-ADMIN_COOKIE_SAMESITE=Strict
-VISITOR_COOKIE_NAME=__Host-account_hub_visitor
-VISITOR_COOKIE_SECURE=true
-VISITOR_COOKIE_SAMESITE=Strict
-VISITOR_COOKIE_MAX_AGE_DAYS=365
-
-ENABLE_CSRF_PROTECTION=true
-ALLOW_LEGACY_ADMIN_TOKEN=false
-ALLOW_LEGACY_VISITOR_HEADER=false
-MAX_JSON_SIZE=1mb
-```
-
 Nếu frontend/backend nằm ở hai site khác hẳn nhau và trình duyệt không gửi cookie, đổi cookie SameSite sang:
-
-```env
-ADMIN_COOKIE_SAMESITE=None
-VISITOR_COOKIE_SAMESITE=None
-ADMIN_COOKIE_SECURE=true
-VISITOR_COOKIE_SECURE=true
-```
 
 ### Lưu ý khi migrate từ bản cũ
 
@@ -422,31 +376,6 @@ Bản này vá thêm phần admin session để dùng ổn hơn khi chạy local
 - Reload/F5, đóng mở lại tab hoặc restart backend vẫn giữ được admin mode nếu cookie còn hạn, `ENCRYPTION_KEY` và `ADMIN_PASSWORD_HASH` không đổi.
 - Nếu bấm **Đăng xuất**, backend sẽ xóa cookie admin và bắt nhập lại mật khẩu.
 - Khi `NODE_ENV=development`, nếu bạn lỡ đặt `ADMIN_COOKIE_SECURE=true` nhưng đang chạy `http://localhost`, backend sẽ tự hạ Secure về `false` để trình duyệt lưu được cookie local. Production vẫn bắt buộc dùng `Secure=true` qua HTTPS.
-
-Cấu hình local khuyên dùng:
-
-```env
-NODE_ENV=development
-CLIENT_URL=http://localhost:5173
-ADMIN_SESSION_DAYS=7
-ADMIN_COOKIE_SECURE=false
-ADMIN_COOKIE_SAMESITE=Lax
-VISITOR_COOKIE_SECURE=false
-VISITOR_COOKIE_SAMESITE=Lax
-```
-
-Cấu hình deploy khuyên dùng:
-
-```env
-NODE_ENV=production
-CLIENT_URL=https://frontend-domain-cua-ban.com
-ADMIN_SESSION_DAYS=7
-ADMIN_COOKIE_SECURE=true
-VISITOR_COOKIE_SECURE=true
-ENABLE_CSRF_PROTECTION=true
-ALLOW_LEGACY_ADMIN_TOKEN=false
-ALLOW_LEGACY_VISITOR_HEADER=false
-```
 
 Lưu ý: nếu bạn đổi `ENCRYPTION_KEY` hoặc đổi `ADMIN_PASSWORD_HASH`, cookie admin cũ sẽ bị vô hiệu để đảm bảo an toàn.
 
@@ -516,24 +445,8 @@ frontend/src/hooks/useRealtimeSync.js
 
 Frontend `.env` khi build GitHub Pages:
 
-```env
-VITE_API_URL=https://ten-backend-cua-ban.onrender.com/api
-VITE_SOCKET_URL=https://ten-backend-cua-ban.onrender.com
-```
 
 Backend `.env` trên Render nếu frontend là GitHub Pages:
-
-```env
-NODE_ENV=production
-CLIENT_URL=https://ten-github-cua-ban.github.io
-ADMIN_COOKIE_SECURE=true
-ADMIN_COOKIE_SAMESITE=None
-VISITOR_COOKIE_SECURE=true
-VISITOR_COOKIE_SAMESITE=None
-ENABLE_CSRF_PROTECTION=true
-ALLOW_LEGACY_ADMIN_TOKEN=false
-ALLOW_LEGACY_VISITOR_HEADER=false
-```
 
 Vì GitHub Pages và Render là khác domain, cookie session nên dùng `SameSite=None` + `Secure=true`. Nếu bạn dùng custom domain cùng site, có thể đổi về `Lax`.
 
